@@ -1,22 +1,12 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-const int MAXN = 1e5+7;
-vector<int> id(MAXN), sz(MAXN);
+#define fastio ios_base::sync_with_stdio(0); cin.tie(0)
+
+const int MAXN = 3*(1e5)+7;
+vector<int> id(MAXN), sz(MAXN), r(MAXN), mini(MAXN), maxi(MAXN);
 int n, m;
 
-void get(int x){
-    int cnt = 0, mini = n, maxi = 0;
-    for(int i = 1; i <= n; i++){
-        if(id[i] == x){
-            cnt++;
-            mini = min(mini, i);
-            maxi = max(maxi, i);
-        }
-    }
-
-    cout << mini << " " << maxi  << " " << cnt << endl;
-}
 int find(int a){
     if(id[a] == a) return a;
     return id[a] = find(id[a]);
@@ -25,16 +15,28 @@ int find(int a){
 void unite(int a, int b){
     a = find(a), b = find(b);
     if(a == b) return;
-    if(sz[a] < sz[b]) swap(a, b);
-    sz[a] += sz[b];
-    id[b] = a;
+    if(r[a] == r[b]) r[a]++;
+    if(r[a] > r[b]){
+        id[b] = a;
+        sz[a] += sz[b];
+        mini[a] = min(mini[a], mini[b]);
+        maxi[a] = max(maxi[a], maxi[b]);
+    }else{
+        id[a] = b;
+        sz[b] += sz[a];
+        mini[b] = min(mini[a], mini[b]);
+        maxi[b] = max(maxi[a], maxi[b]);
+    }
 }
 
 int main(){
+    fastio;
     cin >> n >> m;
     for(int i = 1; i <= n; i++){
         id[i] = i;
         sz[i] = 1;
+        mini[i] = i;
+        maxi[i] = i;
     }
     for(int i = 0; i < m; i++){
         string a;
@@ -44,8 +46,9 @@ int main(){
             unite(b, c);
         }else{
             int a; cin >> a;
-            get(find(a));
+            int b = find(a);
+            cout << mini[b] << " " << maxi[b] << " " << sz[b] << endl;
         }
 
-    }
+    } 
 }
