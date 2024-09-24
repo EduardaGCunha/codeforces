@@ -12,22 +12,22 @@ signed main(){
         int arr[n];
         for(int i = 0; i < n; i++) cin >> arr[i];
 
-        int m; cin >> m;
-        for(int i = 0; i < m; i++){
+        int q; cin >> q;
+        while(q--){
             string s; cin >> s;
-            string ans = "YES";
-            unordered_map<char, int> mp;
-            unordered_map<int, char> mp2;
             if(s.size() != n){
-                ans = "NO";
+                cout << "NO\n";
                 continue;
-            } 
-            for(int j = 0; j < s.size(); j++){
-                if(mp.find(s[j]) == mp.end() && mp2.find(arr[j]) == mp2.end()){
-                    mp[s[j]] = arr[j];
-                    mp2[arr[j]] = s[j];
-                }
-                else if(mp[s[j]] != arr[j] && mp2[arr[j]] != s[j]){
+            }
+            unordered_map<char, int> m1;
+            unordered_map<int, char> m2;
+            string ans = "YES";
+            for(int i = 0; i < s.size(); i++){
+                int x = arr[i];
+                char c = s[i];
+                if(!m1.count(c)) m1[c] = x;
+                if(!m2.count(x)) m2[x] = c;
+                if(m1[c] != x || m2[x] != c) {
                     ans = "NO";
                     break;
                 }
