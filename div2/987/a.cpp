@@ -1,23 +1,19 @@
 #include <bits/stdc++.h>
-using namespace std;
+using namespace std; 
 
 void solve(){
     int n; cin >> n;
     int arr[n];
-    for(int i = 0; i < n; i++) cin >> arr[i];
-    int i = 0, j = n-1;
-    int cnt =0;
-    while(i < j){
-        if(arr[i] > arr[i+1]){
-            int temp = arr[i];
-            arr[i] = arr[j];
-            arr[j] = temp;
-            j--;
-            cnt++;
-        }
-        i++;
+    map<int, int> m;
+    int cnt = 0, differ = 0;
+    for(int i = 0; i < n; i++){
+        cin >> arr[i];
+        m[arr[i]]++;
+        cnt = max(cnt, m[arr[i]]);
     }
-    cout << cnt << endl;
+
+   cout << n - cnt << endl;
+
 }
 
 int main(){
