@@ -5,8 +5,13 @@ using namespace std;
 #define int long long
 #define endl '\n'
 
+/*
+
+*/
+
 void solve(){
-	
+    int n, m, a, b; cin >> n >> m >> a >> b;
+    
 }
 
 signed main(){

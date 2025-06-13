@@ -2,5 +2,6 @@
 using namespace std;
 
 int main(){
-    cout << "omg hi codeforcesss!!!\n";
+    int a, b; cin >> a >> b;
+    cout << a+b << endl;
 }
