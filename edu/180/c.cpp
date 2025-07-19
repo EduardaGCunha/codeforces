@@ -7,23 +7,21 @@ using namespace std;
 
 void solve(){
 	int n; cin >> n;
-    int arr[n];
+    vector<int> arr(n);
     for(int i = 0; i < n; i++) cin >> arr[i];
-
-    int cnt = 0;
-    for(int i = 2; i < n; i++){
-        int mx = max(arr[i], arr[n-1] - arr[i]);
-        //cout << mx << " " << arr[i] << " " << arr[n-1] - arr[i] << endl;
-        int l = 0, r = i-1;
-        while(l < r){
-            if(arr[r] + arr[l] > mx){
-                cnt += (r-l);
-                r--;
-            }else l++;
+    
+    int ans = 0;
+    for(int i = 0; i < n; i++){
+        for(int j = i+1; j < n; j++){
+            int dif = 0;
+            if(arr[n-1] - (arr[i] + arr[j]) >= (arr[j] - arr[i])) dif = arr[n-1] - (arr[i] + arr[j]);
+            else dif = (arr[j] - arr[i]);
+            int x = upper_bound(arr.begin(), arr.end(), dif)-arr.begin();
+            if(x >= i) continue;
+            else ans += (i - x);
         }
-        //cout << "iteracao i: " <<  cnt << endl;
     }
-    cout << cnt << endl;
+    cout << ans << endl;
 }
 
 signed main(){
