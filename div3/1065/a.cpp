@@ -6,7 +6,15 @@ using namespace std;
 #define endl '\n'
 
 void solve(){
+    int n; cin >> n;
 
+    int ans = 0;
+    for(int i = 0; i <= n; i++){
+        int g = i, v = n-i;
+        if(!(g%2) && !(v%4)) ans++;
+    }
+
+    cout << ans << endl;
 }
 
 signed main(){
