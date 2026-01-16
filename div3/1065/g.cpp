@@ -5,56 +5,63 @@ using namespace std;
 #define int long long
 #define endl '\n'
 
+const int MOD = 1e6+3;
+const int MAXN = 1e6+7;
+int fact[MAXN], inv[MAXN];
+
+int fastexpo(int a, int b){
+    int res = 1;
+    while(b > 0){
+        if(b&1) res = (res*a)%MOD;
+        a = (a*a)%MOD;
+        b /= 2;
+    }
+    return res;
+}
 
 void solve(){
     int n; cin >> n;
-    int arr[n], brr[n], potencias[n];
-    potencias[0] = 1;
-    for(int i = 1; i < 20; i++){
-        potencias[i] = potencias[i-1]*2;
-    }
+    int arr[n], brr[n];
     for(int i = 0; i < n; i++) cin >> arr[i];
     for(int i = 0; i < n; i++) cin >> brr[i];
 
-    int k = 1e7;
-    int str[n];
+    int k = 30;
     for(int i = 0; i < n; i++){
-        int v = 1;
-        int mx = 0;
-        for(int j = 0; j < 20; j++){
-            if(arr[i]*v <= brr[i]) mx = max(mx, j);
-            else break;
-            v*=2;
-        }
-        str[i] = mx;
-        k = min(k, mx);
+        k = min(k, __lg(brr[i]/arr[i]));
     }
-    cout << k << endl;
-    int ans = 0;
-    for(int i = 0; i < n; i++){
-        if(k){
-            int pot = 1;
-            int best = 0;
-            for(int j = 0; j < k; j++){
-                //qual o minimo q eu tenho q adicionar pra chegar aq na proxima potencia de 2?
 
-                int goal1 = potencias[j]*arr[i] - arr[i];
-                //agr multiplica todo mundo por 2^k e pega a diferencia do novo valor - brr[i]
-                int goal2 = brr[i] - goal1*potencias[k];
-                best = min(best, goal1 + goal2);
-                pot *= 2;
-            }
-            ans += best; 
-        }else ans += (brr[i] - potencias[k]);
+    //cout << k << endl;
+    vector<int> cnt(20, 0);
+    int x = 0, den = 1, tot = 0, ans = 1;
+    for(int i = 0; i < n; i++){
+        int t = brr[i]/(1<<k) - arr[i];
+        int rem = (brr[i] - (arr[i] + t)*(1<<k));
+        ans = (ans*inv[t])%MOD;
+        tot += t;
+        x += t + __builtin_popcount(rem);
+        for(int j = 0; j < k; j++) cnt[j] += (rem >> j) & 1;
     }
-    cout << ans << endl;
-}
+
+    if(tot >= MOD) ans = 0;
+    else ans = (fact[tot]*ans)%MOD;
+    for(int i = 0; i < k; i++){
+        ans = (ans * fact[cnt[i]])%MOD;
+    }
+
+    x += k;
+    cout << x << " " << ans << endl;
+
+}   
 
 signed main(){
 	fastio;
-    int t;
-    //t = 1;
-    cin >> t;
+    int t; cin >> t;
+    fact[0] = 1;
+    inv[0] = 1;
+    for(int i = 1; i < MAXN; i++){
+        fact[i] = (fact[i-1]*i)%MOD;
+        inv[i] = fastexpo(fact[i],  MOD-2);
+    }
 	while(t--){
 		solve();
 	}

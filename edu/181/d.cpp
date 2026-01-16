@@ -10,26 +10,40 @@ const int MOD = 998244353;
 int fastexpo(int a, int b){
     int res = 1;
     while(b > 0){
-        res = (res * a)%MOD;
+        if(b&1) res = (a*res)%MOD;
         a = (a*a)%MOD;
-        b >>=1;
+        b >>= 1;
     }
     return res;
 }
-
 void solve(){
-    int x = fastexpo(3, MOD-2);
-    int y = fastexpo(2, MOD-2);
-    int v = (x*y)%MOD;
-    v = (v*x)%MOD;
-    int u = (2*x)%MOD;
-    u = (((u*u)%MOD)*(2*y))%MOD;
-    cout << (u + v)%MOD << endl;
+    int n, m; cin >> n >> m;
+    vector<vector<pair<int, int>>> segments(m+1);
+    int tot = 1;
+    for(int i = 0; i < n; i++){
+        int l, r, a, b; cin >> l >> r >> a >> b;
+        int prob = (a * fastexpo(b, MOD-2))%MOD;
+        int nprob = (1 - prob + MOD)%MOD;
+        tot = (tot * nprob)%MOD;
+        int w = (prob * fastexpo(nprob, MOD-2))%MOD;
+        segments[r].push_back({l, w});
+
+    }
+    vector<int> dp(m+1, 0);
+    dp[0] = 1;
+    for(int i = 1; i <= m; i++){
+        for(auto [l, w] : segments[i]){
+            dp[i] = (dp[i] + dp[l-1]*w)%MOD;
+        }
+    }
+    cout << (dp[m]*tot)%MOD << endl;
 }
 
 signed main(){
 	fastio;
-	int t; cin >> t;
+    int t;
+    //cin >> t;
+    t= 1;
 	while(t--){
 		solve();
 	}
