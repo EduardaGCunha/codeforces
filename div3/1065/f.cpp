@@ -31,18 +31,18 @@ void solve(){
 
     suf[0] = suf[1];
     pref[0] = pref[1];
-    for(int i = 1; i < n; i++){
+    for(int i = 1; i <= n; i++){
         if(pref[i-1] > suf[i]){
             cout << "No\n";
             return;
         }
     }
     cout << "Yes\n";
-    // for(int i = 1; i <= n; i++){
-    //     if(suf[i] != arr[i]){
-    //         cout << arr[i] << " " << suf[i] << endl;
-    //     }if(suf[i] != suf[i-1]) cout << pref[i-1] << " " << suf[i] << endl;
-    // }
+    for(int i = 1; i <= n; i++){
+        if(suf[i] != arr[i]){
+            cout << arr[i] << " " << suf[i] << endl;
+        }if(suf[i] != suf[i-1]) cout << pref[i-1] << " " << suf[i] << endl;
+    }
 }   
 
 signed main(){
